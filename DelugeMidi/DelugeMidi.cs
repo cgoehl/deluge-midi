@@ -1,0 +1,40 @@
+﻿using System.IO;
+
+namespace DelugeMidi
+{
+	class DelugeMidi
+	{
+		public DelugeMidi(DirectoryInfo root)
+		{
+			SongsDir = new DirectoryInfo(Path.Combine(root.FullName, "SONGS"));
+			var configDir = Path.Combine(root.FullName, "_delugeTools", "midiInject");
+			ControllerLayout = ReadLayout(Path.Combine(configDir, "controller.csv"));
+			FMLayout = ReadLayout(Path.Combine(configDir, "fm.csv"));
+			KitColLayout = ReadLayout(Path.Combine(configDir, "kit_col.csv"));
+			RingModLayout = ReadLayout(Path.Combine(configDir, "ringmod.csv"));
+			SubtractiveLayout = ReadLayout(Path.Combine(configDir, "subtractive.csv"));
+		}
+
+		public Layout SubtractiveLayout { get; }
+		public Layout RingModLayout { get; }
+		public Layout KitColLayout { get; }
+		public Layout FMLayout { get; }
+		public Layout ControllerLayout { get; }
+		public DirectoryInfo SongsDir { get; }
+
+		public void Inject()
+		{
+			var files = SongsDir.EnumerateFiles("*.XML", SearchOption.TopDirectoryOnly);
+			files.ForEach(file =>
+			{
+				var newDoc = new FileProcessor().Process(file.FullName, this);
+				newDoc.Save(file.FullName);
+			});
+		}
+
+		private Layout ReadLayout(string path)
+		{
+			return new Layout(File.ReadAllText(path));
+		}
+	}
+}
