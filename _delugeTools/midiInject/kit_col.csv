@@ -1,4 +1,4 @@
-delayRate
-lpfFrequency
+reverbAmount
+hpfResonance
 lpfFrequency
 volumePostFX

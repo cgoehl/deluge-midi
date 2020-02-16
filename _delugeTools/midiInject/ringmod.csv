@@ -1,4 +1,4 @@
 oscAVolume,oscAPitch,oscAPhaseWidth,noiseVolume,env1Attack,env1Decay,env1Release,env1Sustain
 oscBVolume,oscBPitch,oscBPhaseWidth,pitch,env2Attack,env2Decay,env2Release,env2Sustain
-lpfResonance,hpfResonance,delayFeedback,---,lfo1Rate,lfo2Rate,---,pan
-lpfFrequency,hpfFrequency,delayRate,reverbAmount,sampleRateReduction,stutterRate,bitcrushAmount,volumePostFX
+lpfResonance,hpfResonance,delayRate,---,lfo1Rate,lfo2Rate,---,pan
+lpfFrequency,hpfFrequency,delayFeedback,reverbAmount,sampleRateReduction,bitcrushAmount,---,volumePostFX

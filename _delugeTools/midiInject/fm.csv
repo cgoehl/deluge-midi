@@ -1,4 +1,4 @@
-modulator1Volume,modulator1Pitch,modulator1Feedback,noiseVolume,env1Attack,env1Decay,env1Release,env1Sustain
-modulator2Volume,modulator2Pitch,modulator2Feedback,pitch,env2Attack,env2Decay,env2Release,env2Sustain
-lpfResonance,hpfResonance,delayFeedback,---,lfo1Rate,lfo2Rate,---,pan
-lpfFrequency,hpfFrequency,delayRate,reverbAmount,sampleRateReduction,stutterRate,bitcrushAmount,volumePostFX
+---,---,---,---,env1Attack,env1Decay,env1Release,env1Sustain
+modulator2Volume,modulator2Pitch,---,pitch,env2Attack,env2Decay,env2Release,env2Sustain
+modulator1Volume,modulator2Volume,delayRate,---,lfo1Rate,lfo2Rate,---,pan
+modulator1Feedback,modulator2Feedback,delayFeedback,reverbAmount,sampleRateReduction,bitcrushAmount,---,volumePostFX

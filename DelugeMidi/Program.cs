@@ -1,10 +1,6 @@
-﻿using System.CodeDom.Compiler;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using System;
 
 namespace DelugeMidi
 {
@@ -17,7 +13,7 @@ namespace DelugeMidi
 
 		void run(string[] args)
 		{
-			var root = FindRoot(Directory.GetParent(GetType().Assembly.Location));
+			var root = FindRoot(Directory.GetParent(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
 			var dm = new DelugeMidi(root);
 			dm.Inject();
 
@@ -26,6 +22,8 @@ namespace DelugeMidi
 		DirectoryInfo FindRoot(DirectoryInfo startingPoint)
 		{
 			var directories = startingPoint.EnumerateDirectories().ToArray();
+			Console.WriteLine("Scanning: {0}", startingPoint);
+			directories.ForEach(d => Console.WriteLine("  {0}", d.Name));
 			if (directories.SingleOrDefault(f => f.Name == "SONGS") != null &&
 			    directories.SingleOrDefault(f => f.Name == "_delugeTools") != null)
 			{

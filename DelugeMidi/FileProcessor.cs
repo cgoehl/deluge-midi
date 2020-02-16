@@ -7,14 +7,13 @@ namespace DelugeMidi
 {
 	class FileProcessor
 	{
-		private int currentChannel = 8;
+		private int currentChannel = 0;
 		private int currentColumn = 0;
 
 		public XDocument Process(string path, DelugeMidi delugeMidi)
 		{
 			Console.WriteLine("{0}",
 					path);
-			currentChannel += 1;
 			var doc = XDocument.Load(path);
 			var instruments = doc.Descendants("instruments").Single();
 
