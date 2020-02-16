@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="block", ATTR{partition}=="*", RUN+="/usr/local/bin/DelugeMidiUdev.sh"
+
