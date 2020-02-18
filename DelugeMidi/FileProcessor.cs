@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DelugeMidi.FW;
 
 namespace DelugeMidi
 {
 	class FileProcessor
 	{
-		private int currentChannel = 0;
+		private readonly Config _config;
+		private int currentChannel;
 		private int currentColumn = 0;
+
+		public FileProcessor(Config config)
+		{
+			_config = config;
+			currentChannel = _config.FirstChannel;
+		}
 
 		public XDocument Process(string path, DelugeMidi delugeMidi)
 		{

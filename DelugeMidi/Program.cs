@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System;
+using DelugeMidi.FW;
 
 namespace DelugeMidi
 {
@@ -13,8 +14,9 @@ namespace DelugeMidi
 
 		void run(string[] args)
 		{
-			var root = FindRoot(Directory.GetParent(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
-			var dm = new DelugeMidi(root);
+			var config = new Config();
+			var root = FindRoot(new DirectoryInfo(config.DelugeSdPath));
+			var dm = new DelugeMidi(root, config);
 			dm.Inject();
 
 		}

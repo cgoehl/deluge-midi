@@ -1,11 +1,15 @@
 ﻿using System.IO;
+using DelugeMidi.FW;
 
 namespace DelugeMidi
 {
 	class DelugeMidi
 	{
-		public DelugeMidi(DirectoryInfo root)
+		private readonly Config _config;
+
+		public DelugeMidi(DirectoryInfo root, Config config)
 		{
+			_config = config;
 			SongsDir = new DirectoryInfo(Path.Combine(root.FullName, "SONGS"));
 			var configDir = Path.Combine(root.FullName, "_delugeTools", "midiInject");
 			ControllerLayout = ReadLayout(Path.Combine(configDir, "controller.csv"));
@@ -27,7 +31,7 @@ namespace DelugeMidi
 			var files = SongsDir.EnumerateFiles("*.XML", SearchOption.TopDirectoryOnly);
 			files.ForEach(file =>
 			{
-				var newDoc = new FileProcessor().Process(file.FullName, this);
+				var newDoc = new FileProcessor(_config).Process(file.FullName, this);
 				newDoc.Save(file.FullName);
 			});
 		}
