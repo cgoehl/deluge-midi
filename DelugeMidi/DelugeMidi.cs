@@ -11,12 +11,12 @@ namespace DelugeMidi
 		{
 			_config = config;
 			SongsDir = new DirectoryInfo(Path.Combine(root.FullName, "SONGS"));
-			var configDir = Path.Combine(root.FullName, "_delugeTools", "midiInject");
-			ControllerLayout = ReadLayout(Path.Combine(configDir, "controller.csv"));
-			FMLayout = ReadLayout(Path.Combine(configDir, "fm.csv"));
-			KitColLayout = ReadLayout(Path.Combine(configDir, "kit_col.csv"));
-			RingModLayout = ReadLayout(Path.Combine(configDir, "ringmod.csv"));
-			SubtractiveLayout = ReadLayout(Path.Combine(configDir, "subtractive.csv"));
+			var layoutsDir = Path.Combine(root.FullName, "_delugeTools", "DelugeMidiLayouts");
+			ControllerLayout = ReadLayout(Path.Combine(layoutsDir, "controller.csv"));
+			FMLayout = ReadLayout(Path.Combine(layoutsDir, "fm.csv"));
+			KitColLayout = ReadLayout(Path.Combine(layoutsDir, "kit_col.csv"));
+			RingModLayout = ReadLayout(Path.Combine(layoutsDir, "ringmod.csv"));
+			SubtractiveLayout = ReadLayout(Path.Combine(layoutsDir, "subtractive.csv"));
 		}
 
 		public Layout SubtractiveLayout { get; }

@@ -9,7 +9,7 @@ This project injects MIDI-Mappings into Synthstrom Deluge song files. While a ce
 This [sheet](https://docs.google.com/spreadsheets/d/1HbQi0aSfgHbYNjTW637rvSPKAifUnQkZiXBxY-HuZeE/edit?usp=sharing) might be handy to create your customizations.
 You will also find a list of all controllable parameters there, or at least the ones I found ;)
 
-Export each one as CSV to the corresponding file in `_delugeTools/midiInject`. Please keep in mind, that I might change my default layouts without notice.
+Export each one as CSV to the corresponding file in `_delugeTools/DelugeMidiLayouts`. Please keep in mind, that I might change my default layouts without notice.
 
 ## Setup
 
