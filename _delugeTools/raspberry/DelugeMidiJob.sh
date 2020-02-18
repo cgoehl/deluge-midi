@@ -13,7 +13,7 @@ echo mount -o uid=$(id -u $USER) "$DEVNAME" "$MOUNT_DIR"
 mount -o uid=$(id -u $USER) "$DEVNAME" "$MOUNT_DIR"
 
 echo "Executing $BINARY as $USER"
-sudo -u $USER "$BINARY" 2>&1 >> /tmp/DelugeMidiExec.log
+sudo -u $USER "$BINARY" 2>&1 >> /tmp/DelugeMidiExec.log || true
 echo "Unmounting $DEVNAME"
 umount "$DEVNAME"
 
