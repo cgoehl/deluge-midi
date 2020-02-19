@@ -18,7 +18,6 @@ namespace DelugeMidi
 			var root = FindRoot(new DirectoryInfo(config.DelugeSdPath));
 			var dm = new DelugeMidi(root, config);
 			dm.Inject();
-
 		}
 
 		DirectoryInfo FindRoot(DirectoryInfo startingPoint)
