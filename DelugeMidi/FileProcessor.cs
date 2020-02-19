@@ -9,89 +9,92 @@ namespace DelugeMidi
 	class FileProcessor
 	{
 		private readonly Config _config;
-		private int currentChannel;
-		private int currentColumn = 0;
+		private readonly DelugeMidi _delugeMidi;
+		private readonly Dictionary<string, Layout> _synthLayouts;
+		private int _currentChannel;
+		private int _currentColumn = 0;
+		
 
-		public FileProcessor(Config config)
+		public FileProcessor(Config config, DelugeMidi delugeMidi)
 		{
 			_config = config;
-			currentChannel = _config.FirstChannel;
+			_delugeMidi = delugeMidi;
+			_synthLayouts = new Dictionary<string, Layout>()
+			{
+				{"fm", _delugeMidi.FMLayout},
+				{"ringmod", _delugeMidi.RingModLayout},
+				{"subtractive", _delugeMidi.SubtractiveLayout},
+			};
+			_currentChannel = _config.FirstChannel;
 		}
 
-		public XDocument Process(string path, DelugeMidi delugeMidi)
+		public XDocument Process(string path)
 		{
 			Console.WriteLine("{0}",
 					path);
 			var doc = XDocument.Load(path);
 			var instruments = doc.Descendants("instruments").Single();
 
-			var synthLayouts = new Dictionary<string, Layout>()
-			{
-				{"fm", delugeMidi.FMLayout},
-				{"ringmod", delugeMidi.RingModLayout},
-				{"subtractive", delugeMidi.SubtractiveLayout},
-			};
+			
+
+			
 
 			instruments.Elements()
 				.OrderBy(GetInstrumentName)
 				.Where(instrument => instrument.Name.LocalName == "sound")
-				.ForEach(synth =>
-			{
-				var mode = synth.Attribute("mode").Value;
-				var layout = synthLayouts[mode];
-				var knobs = RenderKnobs(
-					layout.Page(),
-					delugeMidi.ControllerLayout.Page(),
-					currentChannel);
-				addKnobs(synth, knobs);
-				Console.WriteLine(
-					"  Synth: name={1};layout={2};channel={3}",
-					path,
-					GetInstrumentName(synth),
-					mode,
-					currentChannel);
-				currentChannel += 1;
-			});
+				.ForEach(AddSynth);
+
+			
 
 			instruments.Elements()
 				.OrderBy(GetInstrumentName)
 				.Where(instrument => instrument.Name.LocalName == "kit")
-				.ForEach(kit =>
-				{
-					var sounds = kit.Element("soundSources").Elements("sound").ToArray();
-					sounds.ForEach(sound =>
-					{
-						if (currentChannel > 15)
-						{
-							return;
-						}
-						var knobs = RenderKnobs(
-							delugeMidi.KitColLayout.Column(0),
-							delugeMidi.ControllerLayout.Column(currentColumn),
-							currentChannel);
-						addKnobs(sound, knobs);
-						Console.WriteLine(
-							"  Kit: name={1};sound={2};channel={3};column={4}",
-							path,
-							GetInstrumentName(kit),
-							GetInstrumentName(sound),
-							currentChannel,
-							currentColumn);
-						currentColumn += 1;
-						if (currentColumn == 8)
-						{
-							currentChannel += 1;
-							currentColumn = 0;
-						}
-					});
-					if (currentColumn > 0)
-					{
-						currentChannel += 1;
-						currentColumn = 0;
-					}
-				});
+				.ForEach(AddKit);
 			return doc;
 		}
+
+		void AddSynth(XElement synth)
+			{
+				var mode = synth.Attribute("mode").Value;
+				var layout = _synthLayouts[mode];
+				var knobs = RenderKnobs(layout.Page(), _delugeMidi.ControllerKnobsLayout.Page(), _currentChannel);
+				synth.ReplaceChildElement(knobs);
+				synth.SetAttributeValue("inputMidiChannel", _currentChannel);
+				Console.WriteLine("  Synth: name={0};layout={1};channel={2}", GetInstrumentName(synth), mode, _currentChannel);
+				_currentChannel += 1;
+			}
+
+			void AddKit(XElement kit)
+			{
+				var sounds = kit.Element("soundSources").Elements("sound").ToArray();
+				sounds.ForEach(sound => AddKitRow(kit, sound));
+				if (_currentColumn > 0)
+				{
+					_currentChannel += 1;
+					_currentColumn = 0;
+				}
+			}
+
+			void AddKitRow(XElement kit, XElement sound)
+			{
+				if (_currentChannel > 15)
+				{
+					return;
+				}
+
+				var knobs = RenderKnobs(_delugeMidi.KitColLayout.Column(0), _delugeMidi.ControllerKnobsLayout.Column(_currentColumn), _currentChannel);
+				sound.ReplaceChildElement(knobs);
+
+				//<midiInput channel="8" note="42" />
+
+				Console.WriteLine("  Kit: name={0};sound={1};channel={2};column={3}", GetInstrumentName(kit), GetInstrumentName(sound), _currentChannel, _currentColumn);
+				_currentColumn += 1;
+				if (_currentColumn == 8)
+				{
+					_currentChannel += 1;
+					_currentColumn = 0;
+				}
+			}
 
 		public XElement RenderKnobs(IEnumerable<string> contents, IEnumerable<string> controller, int channel)
 		{
@@ -110,16 +113,6 @@ namespace DelugeMidi
 				})
 				.ForEach(midiKnobs.Add);
 			return midiKnobs;
-		}
-
-		private void addKnobs(XElement instrument, XElement knobs)
-		{
-			var current = instrument.Elements("midiKnobs");
-			if (current != null)
-			{
-				current.Remove();
-			}
-			instrument.Add(knobs);
 		}
 
 		private String GetInstrumentName(XElement instrument)

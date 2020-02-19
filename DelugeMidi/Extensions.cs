@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 namespace DelugeMidi
 {
@@ -13,6 +14,14 @@ namespace DelugeMidi
 				action(element);
 			}
 		}
+
+		public static void ReplaceChildElement(this XElement parent, XElement newChild)
+		{
+			var current = parent.Elements(newChild.Name);
+			current.Remove();
+			parent.Add(newChild);
+		}
+
 
 		public static IEnumerable<string> Split(this string s, string separator) =>
 			s.Split(new[] { separator }, StringSplitOptions.None);
