@@ -1,0 +1,9 @@
+[Unit]
+Description=Deluge Midi mapping injection
+
+[Service]
+ExecStart=/usr/local/bin/DelugeMidiService.sh
+
+[Install]
+WantedBy=multi-user.target
+
