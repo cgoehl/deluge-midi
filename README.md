@@ -1,6 +1,6 @@
 # DelugeMidi
 
-This project creates MIDI-Mappings for [Synthstrom Deluge](https://synthstrom.com/product/deluge/) to be controlled by [LaunchControl XL](https://novationmusic.com/en/launch/launch-control-xl). 
+This project creates MIDI-Mappings for [Synthstrom Deluge](https://synthstrom.com/product/deluge/) to be controlled by [LaunchControl XL](https://novationmusic.com/en/launch/launch-control-xl). Support for other controllers exists, but is undocumented and untested.
 
 Features:
 - Update Deluge Songs on SD-Card to include MIDI mappings for:
