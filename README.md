@@ -36,3 +36,15 @@ Once you have the hub running, follow steps below (find all files in `_delugeToo
   - Verify path of linux binary in `DelugeMidiJob.sh`.
 - Make sure all have `chmod +x` permissions for root.
 - Reboot or reload udev.
+
+
+# DelugeMidi
+
+This project maps 
+
+```
+$ sudo -i
+# cp /boot/setup.sh .
+# chmod +x setup.sh
+# ./setup.sh
+```
