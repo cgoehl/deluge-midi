@@ -25,5 +25,8 @@ namespace DelugeMidi
 
 		public static IEnumerable<string> Split(this string s, string separator) =>
 			s.Split(new[] { separator }, StringSplitOptions.None);
-	}
+
+		public static IEnumerable<string> SplitLines(this string s) =>
+			s.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+}
 }

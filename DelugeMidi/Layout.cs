@@ -9,11 +9,17 @@ namespace DelugeMidi
 
 		public Layout(string template)
 		{
-			Contents = template.Split(Environment.NewLine)
-				.Select(row => row.Split(",").ToArray())
+			Contents = template
+				.SplitLines()
+				.Select(row => row
+					.Split(",")
+					.Select(cell => cell.Trim())
+					.ToArray())
 				.ToArray();
 			Height = Contents.Length;
 			Width = Contents[0].Length;
+			Console.WriteLine(template);
+			Console.WriteLine(string.Join(";", Page()));
 		}
 
 		private string[][] Contents { get; }
