@@ -26,7 +26,7 @@ namespace DelugeMidi
 			_currentChannel = _config.FirstChannel;
 		}
 
-		public XDocument Process(string path)
+		public void Process(string path)
 		{
 			Console.WriteLine("{0}",
 					path);
@@ -45,7 +45,7 @@ namespace DelugeMidi
 				.TakeWhile(_ => HasChannelsLeft)
 				.ForEach(AddKit);
 
-			return doc;
+			doc.Save(path);
 		}
 
 		void AddSynth(XElement synth)

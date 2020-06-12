@@ -33,8 +33,7 @@ namespace DelugeMidi
 			var files = SongsDir.EnumerateFiles("*.XML", SearchOption.TopDirectoryOnly);
 			files.ForEach(file =>
 			{
-				var newDoc = new FileProcessor(_config, this).Process(file.FullName);
-				newDoc.Save(file.FullName);
+				new FileProcessor(_config, this).Process(file.FullName);
 			});
 		}
 
