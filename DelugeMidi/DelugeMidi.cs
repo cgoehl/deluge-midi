@@ -28,7 +28,7 @@ namespace DelugeMidi
 		public Layout ControllerKnobsLayout { get; }
 		public DirectoryInfo SongsDir { get; }
 
-		public void Inject()
+		public void Run()
 		{
 			var files = SongsDir.EnumerateFiles("*.XML", SearchOption.TopDirectoryOnly);
 			files.ForEach(file =>
