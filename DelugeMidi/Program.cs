@@ -21,18 +21,19 @@ namespace DelugeMidi
 
 		DirectoryInfo FindRoot(DirectoryInfo startingPoint)
 		{
-			var directories = startingPoint.EnumerateDirectories().ToArray();
 			Console.WriteLine("Scanning: {0}", startingPoint);
-			directories.ForEach(d => Console.WriteLine("  {0}", d.Name));
+
+			var directories = startingPoint.EnumerateDirectories().ToArray();
 			if (directories.SingleOrDefault(f => f.Name == "SONGS") != null &&
 			    directories.SingleOrDefault(f => f.Name == "_delugeTools") != null)
 			{
+				Console.WriteLine("Found root: {0}", startingPoint);
 				return startingPoint;
 			}
 
 			if (startingPoint.Equals(startingPoint.Root))
 			{
-				return null;
+				throw new DirectoryNotFoundException("Could not find Deluge SD root.");
 			}
 
 			return FindRoot(startingPoint.Parent);
