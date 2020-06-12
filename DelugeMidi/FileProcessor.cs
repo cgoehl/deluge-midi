@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using DelugeMidi.FW;
 
 namespace DelugeMidi
 {
@@ -12,7 +11,7 @@ namespace DelugeMidi
 		private readonly DelugeMidi _delugeMidi;
 		private readonly Dictionary<string, Layout> _synthLayouts;
 		private int _currentChannel;
-		private int _currentColumn = 0;
+		private int _currentColumn;
 
 		public FileProcessor(Config config, DelugeMidi delugeMidi)
 		{

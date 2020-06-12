@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using DelugeMidi.FW;
 
 namespace DelugeMidi
 {

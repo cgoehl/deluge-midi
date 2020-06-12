@@ -18,8 +18,6 @@ namespace DelugeMidi
 				.ToArray();
 			Height = Contents.Length;
 			Width = Contents[0].Length;
-			Console.WriteLine(template);
-			Console.WriteLine(string.Join(";", Page()));
 		}
 
 		private string[][] Contents { get; }

@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using System;
-using DelugeMidi.FW;
 
 namespace DelugeMidi
 {
@@ -9,10 +8,10 @@ namespace DelugeMidi
 	{
 		static void Main(string[] args)
 		{
-			new Program().run(args);
+			new Program().run();
 		}
 
-		void run(string[] args)
+		void run()
 		{
 			var config = new Config();
 			var root = FindRoot(new DirectoryInfo(config.DelugeSdPath));
