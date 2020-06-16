@@ -22,6 +22,6 @@ systemctl enable midi.service
 systemctl enable deluge-midi.service
 
 echo
-echo "Success, rebooting 10s"
+echo "Success, rebooting in 10s..."
 sleep 10s
 reboot
