@@ -1,0 +1,63 @@
+@startuml
+
+' class "Program" {
+' 	+{static} main(args: string[])
+' 	+Run()
+' 	-FindRoot(path: string) :string
+' }
+
+class Config {
+	+DelugeSdPath: String
+	+FirstChannel: String
+	-ReadVariable<T>(string key, T fallback): T
+}
+
+class DelugeMidi {
+	-_config: Config
+	+ControllerKnobsLayout: Layout
+	+ControllerNotesLayout: Layout
+	+KitColLayout: Layout
+	+SubtractiveLayout: Layout
+	+RingModLayout: Layout
+	+FMLayout: Layout
+	+SongsDir: DirectoryInfo
+	+Run()
+}
+
+class FileProcessor {
+	-_config: Config
+	-_delugeMidi: DelugeMidi
+	-_currentChannel: int
+	-_currentColumn: int
+	-HasChannelsLeft: bool
+	-HasColumnsLeft: bool
+	+Process(string path): void
+	-AddSynth(XElement synth): void
+	-AddKit(XElement kit): void
+	-AddKitRow(XElement kit, XElement sound): void
+	-AddKitRowNote(XElement sound): void
+	-RenderKnobs(IEnumerable<string> contents, IEnumerable<string> controller, int channel): XElement
+	-GetInstrumentName(XElement instrument): string
+}
+
+class Layout {
+	-Contents: String[][]
+	+Width: int
+	+Height: int
+
+	+At(int x, int y): string
+	+Page(): IEnumerable<string>
+	+Row(int y): IEnumerable<string>
+	+Column(int x): IEnumerable<string>
+}
+
+DelugeMidi *-- Layout
+
+' Program --> Config : <<create>>
+' Program --> DelugeMidi: <<create>>
+DelugeMidi *-- Config
+
+FileProcessor *-- Config
+FileProcessor *-- DelugeMidi
+
+@enduml

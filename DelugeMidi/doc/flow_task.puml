@@ -1,0 +1,58 @@
+@startuml
+autoactivate on
+' skinparam handwritten true
+' skinparam backgroundColor #EEEBDC
+
+participant ":Program" as Program
+participant ":DelugeMidi" as DelugeMidi
+participant ":FileProcessor" as FileProcessor
+participant ":XDocument" as XDocument
+
+
+== Main task ==
+
+Program -> DelugeMidi: Run()
+
+
+loop each song    
+
+
+	DelugeMidi -> FileProcessor **
+	DelugeMidi -> FileProcessor : Process(song)
+	FileProcessor -> XDocument ** : XDocument(path)
+	
+== Add synthesizers ==
+	
+	FileProcessor -> XDocument : //get synths//
+	return synthNodes
+
+	loop each synthNode
+		FileProcessor -> FileProcessor : AddSynth(synthNode)
+		FileProcessor -> XDocument : //update//
+		return
+		return
+	end
+
+== Add kit ==
+
+	FileProcessor -> XDocument : //get kits//
+	return kitNodes
+
+	loop each kitNode
+		FileProcessor -> FileProcessor : AddKit(kitNode)
+		FileProcessor -> XDocument : //update//
+		return
+		return
+	end
+
+	FileProcessor -> XDocument : Save()
+	return	
+
+	FileProcessor -> XDocument !!
+	DelugeMidi -> FileProcessor !!
+end
+
+
+Program -> DelugeMidi !!
+
+@enduml

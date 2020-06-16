@@ -1,0 +1,35 @@
+@startuml
+autoactivate on
+' skinparam handwritten true
+' skinparam backgroundColor #EEEBDC
+
+actor user
+participant ":Program" as Program
+participant ":DelugeMidi" as DelugeMidi
+
+participant "controller :Layout" as controller
+participant "subtractive :Layout" as subtractive
+participant "ring :Layout" as ring
+participant "fm :Layout" as fm
+participant "kit :Layout" as kit
+
+
+== Initialization ==
+
+user -> Program : start
+Program -> Program: FindRoot
+return root directory
+
+Program -> DelugeMidi **
+
+DelugeMidi -> controller **
+DelugeMidi -> subtractive **
+DelugeMidi -> ring **
+DelugeMidi -> fm **
+DelugeMidi -> kit **
+
+== Main task ==
+
+Program -> DelugeMidi: Run()
+
+@enduml

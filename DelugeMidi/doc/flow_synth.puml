@@ -1,0 +1,44 @@
+@startuml
+autoactivate on
+' skinparam handwritten true
+' skinparam backgroundColor #EEEBDC
+
+participant ":FileProcessor" as FileProcessor
+participant ":XDocument" as XDocument
+
+participant "controller :Layout" as controller
+participant "subtractive :Layout" as subtractive
+participant "ring :Layout" as ring
+participant "fm :Layout" as fm
+
+
+
+	
+== Add synthesizer ==
+	
+
+FileProcessor -> FileProcessor : AddSynth(synthNode)
+
+alt type is subtractive
+	FileProcessor -> subtractive: Page()
+	return templateMapping
+else type is ring
+	FileProcessor -> ring: Page()
+	return templateMapping
+else type is fm
+	FileProcessor -> fm: Page()
+	return templateMapping
+end
+
+FileProcessor -> controller : Page()
+return controllerMapping
+
+FileProcessor -> FileProcessor : RenderKnobs(templateMapping, controllerMapping)
+return midiKnobs : XNode
+
+FileProcessor -> XDocument : //replace element(synthNode, midiKnobs)//
+return
+
+return
+
+@enduml

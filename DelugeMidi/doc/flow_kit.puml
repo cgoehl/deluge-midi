@@ -1,0 +1,40 @@
+@startuml
+autoactivate on
+' skinparam handwritten true
+' skinparam backgroundColor #EEEBDC
+
+participant ":FileProcessor" as FileProcessor
+participant ":XDocument" as XDocument
+
+participant "controller :Layout" as controller
+participant "kit :Layout" as kit
+
+
+
+== Add kit ==
+
+FileProcessor -> FileProcessor : AddKit(kitNode)
+
+loop each soundNode in kitNode
+
+	FileProcessor -> FileProcessor : AddKitRow(kitNode, soundNode)
+
+	FileProcessor -> kit: Column(0)
+	return templateMapping
+	FileProcessor -> controller : Column(i)
+	return controllerMapping
+
+	FileProcessor -> FileProcessor : RenderKnobs(templateMapping, controllerMapping)
+	return midiKnobs : XNode
+	FileProcessor -> XDocument : //replace element(soundNode, midiKnobs)//
+	return
+
+end
+
+
+
+return
+
+return
+
+@enduml
