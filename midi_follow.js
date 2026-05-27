@@ -82,7 +82,7 @@ const params = [
 	"volumePostFX",
 	"waveFoldH"];
 
-document.addEventListener("readystatechange", onReady);
+window.addEventListener("load", () => main(lcxl));
 
 const lcxl = {
 	width: 8,
@@ -95,27 +95,50 @@ const lcxl = {
 	],
 }
 
+const storageKey = 'deluge_midi_follow';
+
 function getSavedValue(cc)
 {
-	return localStorage.getItem(`saved_${cc}`) || '---';
+	const settings = JSON.parse(localStorage.getItem(storageKey) || '{}');
+	return settings[cc] || '---';
 }
 
 function saveValue(cc, value)
 {
-	if (value != '---')
-	{
-		localStorage.setItem(`saved_${cc}`, value);
-	}
-	else
-	{
-		localStorage.removeItem(`saved_${cc}`);
-	}
+	const settings = JSON.parse(localStorage.getItem(storageKey) || '{}');
+	settings[cc] = value;
+	localStorage.setItem(storageKey, JSON.stringify(settings));
+}
+
+function clear()
+{
+	localStorage.removeItem(storageKey);
+	window.location.reload();
 }
 
 function generateXml(controller)
 {
 	const container = document.getElementById("generated_xml");
-	container.innerText = params.length;
+	var assigned = {};
+	controller.ccNumbers.forEach(cc => {
+		const value = getSavedValue(cc);
+		if (value != '---') {
+			assigned[value] = cc;
+		}
+	})
+	const rows = params.slice(1).map((p) => {
+		const cc = assigned[p] || 255;
+		return `\t\t<${p}>${cc}</${p}>`
+	});
+const content =
+`<?xml version="1.0" encoding="UTF-8"?>
+<defaults>
+	<defaultCCMappings>
+${rows.join('\n')}
+	</defaultCCMappings>
+</defaults>
+`;
+	container.innerText = content;
 }
 
 function createInput(controller, x, y)
@@ -147,13 +170,25 @@ function main(controller)
 	for (let y = 0; y < controller.height; y++) {
 		const row = document.createElement("div");
 		row.classList.add('row')
+		row.id = `row_${y}`;
 		for (let x = 0; x < controller.width; x++) {
 			row.append(createInput(controller, x, y));
 		}
 		root.append(row);
 	}
-}
-
-function onReady() {
-	main(lcxl);
+	generateXml(controller);
+	document.getElementById('copy_xml').onclick = function() {
+		const container = document.getElementById("generated_xml");
+		navigator.clipboard.writeText(container.innerText)
+			.then(
+				() => alert("Copied :)"),
+				() => alert("Failed :("),
+			)
+	}
+	document.getElementById('clear').onclick = function() {
+		if (confirm("Clear all data?"))
+		{
+			clear();
+		}
+	};
 }

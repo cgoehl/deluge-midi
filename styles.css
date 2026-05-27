@@ -1,0 +1,28 @@
+body {
+	font-family: sans-serif;
+	box-sizing: border-box;
+	color: white;
+	background-color: black;
+}
+
+.row > select
+{
+	width: 11%;
+}
+
+#form_grid
+{
+	margin-top: 1em;
+}
+
+#copy_xml
+{
+	margin-top: 1em;
+}
+
+#generated_xml
+{
+	font-family: monospace;
+	width: 88%;
+	white-space: pre-wrap;
+}
